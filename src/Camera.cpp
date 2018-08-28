@@ -77,7 +77,7 @@ bool Camera::loadARTKCalib(const char* filename) {
 
     camf.close();
 
-    undist_iterations = min(undist_iterations, CAMERA_ADV_MAX_UNDIST_ITERATIONS);
+    undist_iterations = std::min(undist_iterations, CAMERA_ADV_MAX_UNDIST_ITERATIONS);
 
     mat[0][0] = fc[0]; // fc_x
     mat[1][1] = fc[1]; // fc_y

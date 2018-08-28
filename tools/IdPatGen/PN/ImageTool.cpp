@@ -120,8 +120,8 @@ saveAsTGA(Image* nImage, const char* nFileName)
 	fwrite(tmpBuf2, 1, size, fp);
 	fclose(fp);
 
-	delete tmpBuf;
-	delete tmpBuf2;
+	delete[] tmpBuf;
+	delete[] tmpBuf2;
 
 	return true;
 }

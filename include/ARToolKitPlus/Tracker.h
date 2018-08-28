@@ -33,6 +33,7 @@
 #include <vector>
 #include <algorithm>
 
+
 namespace ARToolKitPlus {
 
 /**

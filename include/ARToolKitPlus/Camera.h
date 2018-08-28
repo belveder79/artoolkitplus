@@ -48,13 +48,14 @@ public:
     void printSettings();
     std::string getFileName() const;
 
-protected:
-    std::string fileName;
-    int undist_iterations;
-
-    //ARFloat dist_factor[4];
     ARFloat cc[2];
     ARFloat fc[2];
+    int undist_iterations;
+    
+protected:
+    std::string fileName;
+
+    //ARFloat dist_factor[4];
 
     bool loadARTKCalib(const char* filename);
 

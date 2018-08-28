@@ -107,6 +107,15 @@
     #pragma warning( disable : 4511 )
 #endif
 
+#if (defined WIN32 || defined _WIN32 || defined WINCE || defined __CYGWIN__) && defined VIZAPI_EXPORTS
+#  define VIZ_EXPORTS __declspec(dllexport)
+#elif defined __GNUC__ && __GNUC__ >= 4
+#  define VIZ_EXPORTS __attribute__ ((visibility ("default")))
+#else
+#  define VIZ_EXPORTS
+#endif
+
+
 // Support for Visual Studio compilation
 #if defined(AR_STATIC)
 	#define AR_EXPORT 

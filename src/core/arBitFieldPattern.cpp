@@ -261,7 +261,7 @@ int Tracker::downsamplePattern(uint8_t* data, unsigned char* imgPtr) {
     return 0;
 }
 
-int Tracker::bitfield_check_simple(uint8_t *data, int *code, int *dir, ARFloat *cf, int thresh) {
+AR_EXPORT int Tracker::bitfield_check_simple(uint8_t *data, int *code, int *dir, ARFloat *cf, int thresh) {
     assert(sizeof(IDPATTERN)>=8 && "IDPATTERN must be at least 64-bit integer");
 
     unsigned char patimg[idPattWidth * idPattHeight], *imgPtr = patimg;
@@ -337,7 +337,7 @@ int Tracker::bitfield_check_simple(uint8_t *data, int *code, int *dir, ARFloat *
     return 0;
 }
 
-int Tracker::bitfield_check_BCH(uint8_t *data, int *code, int *dir, ARFloat *cf, int thresh) {
+AR_EXPORT int Tracker::bitfield_check_BCH(uint8_t *data, int *code, int *dir, ARFloat *cf, int thresh) {
     assert(sizeof(IDPATTERN)>=8 && "IDPATTERN must be at least 64-bit integer");
 
     unsigned char patimg[idPattWidth * idPattHeight], *imgPtr = patimg;

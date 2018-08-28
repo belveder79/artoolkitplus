@@ -30,7 +30,7 @@ static int get_vertex( int x_coord[], int y_coord[], int st,  int ed,
                        ARFloat thresh, int vertex[], int *vnum);
 
 
- ARMarkerInfo2*
+AR_EXPORT ARMarkerInfo2*
 Tracker::arDetectMarker2(int16_t *limage, int label_num, int *label_ref,
                     int *warea, ARFloat *wpos, int *wclip,
                     int area_max, int area_min, ARFloat factor, int *marker_num)
