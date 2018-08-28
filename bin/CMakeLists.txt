@@ -6,6 +6,10 @@ target_link_libraries(simple ARToolKitPlus)
 
 add_executable(multi ${AR_SOURCE_DIR}/sample/multi/main.cpp)
 target_link_libraries(multi ARToolKitPlus)
+IF(OpenCV_FOUND)
+  add_executable(multiOpenCV ${AR_SOURCE_DIR}/sample/multi/mainOpenCV.cpp)
+  target_link_libraries(multiOpenCV ARToolKitPlus ${OpenCV_LIBS})
+ENDIF(OpenCV_FOUND)
 
 # tools
 add_executable(patt2ppm ${AR_SOURCE_DIR}/tools/patt2ppm/main.cpp)
