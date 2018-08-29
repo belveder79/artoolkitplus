@@ -9,6 +9,12 @@ target_link_libraries(multi ARToolKitPlus)
 IF(OpenCV_FOUND)
   add_executable(multiOpenCV ${AR_SOURCE_DIR}/sample/multi/mainOpenCV.cpp)
   target_link_libraries(multiOpenCV ARToolKitPlus ${OpenCV_LIBS})
+
+  add_executable(mown ${AR_SOURCE_DIR}/sample/multi/mainOpenCVOwn.cpp)
+  target_link_libraries(mown ARToolKitPlus ${OpenCV_LIBS})
+
+  add_executable(mplanar ${AR_SOURCE_DIR}/sample/multi/mainplanar.cpp)
+  target_link_libraries(mplanar ARToolKitPlus ${OpenCV_LIBS})
 ENDIF(OpenCV_FOUND)
 
 # tools

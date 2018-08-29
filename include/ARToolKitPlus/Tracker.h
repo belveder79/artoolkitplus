@@ -303,6 +303,8 @@ public:
         return trackedCorners;
     }
 
+    static int arUtilMatInv(ARFloat s[3][4], ARFloat d[3][4]);
+
 protected:
 #ifdef SMALL_LUM8_TABLE
     static const int LUM_TABLE_SIZE = (0xffff >> 6) + 1;
@@ -407,8 +409,6 @@ protected:
     int arGetLine(int x_coord[], int y_coord[], int vertex[], ARFloat line[4][3], ARFloat v[4][2]);
 
     static int arUtilMatMul(ARFloat s1[3][4], ARFloat s2[3][4], ARFloat d[3][4]);
-
-    static int arUtilMatInv(ARFloat s[3][4], ARFloat d[3][4]);
 
     static int arMatrixPCA(ARMat *input, ARMat *evec, ARVec *ev, ARVec *mean);
 

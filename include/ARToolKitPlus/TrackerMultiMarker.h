@@ -114,6 +114,15 @@ public:
     }
 
     /**
+     * Returns the loaded ARMultiMarkerInfoT object
+     *  If loading the multi-marker config file failed then this method
+     *  returns NULL.
+     */
+    virtual void setMultiMarkerConfig(ARMultiMarkerInfoT* newconfig) {
+        config = newconfig;
+    }
+
+    /**
      * Provides access to ARToolKit' internal version of the transformation matrix
      *  This method is primarily for compatibility issues with code previously using
      *  ARToolKit rather than ARToolKitPlus. This is the original transformation
