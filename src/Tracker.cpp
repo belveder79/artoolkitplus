@@ -410,7 +410,8 @@ ARFloat Tracker::executeSingleMarkerPoseEstimator(ARMarkerInfo *marker_info, ARF
     return -1.0f;
 }
 
-ARFloat Tracker::executeMultiMarkerPoseEstimator(ARMarkerInfo *marker_info, int marker_num, ARMultiMarkerInfoT *config) {
+ARFloat Tracker::executeMultiMarkerPoseEstimator(const uint8_t* nImage, ARMarkerInfo *marker_info,
+                                                 int marker_num, ARMultiMarkerInfoT *config) {
     if(marker_num == 0) {
         // dont try anything if we have no markers
         return -1;
@@ -422,10 +423,10 @@ ARFloat Tracker::executeMultiMarkerPoseEstimator(ARMarkerInfo *marker_info, int 
 
     switch (poseEstimator) {
     case POSE_ESTIMATOR_ORIGINAL:
-        return arMultiGetTransMat(marker_info, marker_num, config);
+        return arMultiGetTransMat(nImage, marker_info, marker_num, config);
 
     case POSE_ESTIMATOR_ORIGINAL_CONT:
-        return arMultiGetTransMat(marker_info, marker_num, config);
+        return arMultiGetTransMat(nImage, marker_info, marker_num, config);
 
     case POSE_ESTIMATOR_RPP:
         return rppMultiGetTransMat(marker_info, marker_num, config);

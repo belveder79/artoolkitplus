@@ -90,7 +90,7 @@ public:
     virtual int arDetectMarkerLite(const uint8_t *dataPtr, int thresh, ARMarkerInfo **marker_info, int *marker_num);
 
     /// calculates the transformation matrix between camera and the given multi-marker config
-    virtual ARFloat arMultiGetTransMat(ARMarkerInfo *marker_info, int marker_num, ARMultiMarkerInfoT *config);
+    virtual ARFloat arMultiGetTransMat(const uint8_t* nImage, ARMarkerInfo *marker_info, int marker_num, ARMultiMarkerInfoT *config);
 
     virtual ARFloat arMultiGetTransMatHull(ARMarkerInfo *marker_info, int marker_num, ARMultiMarkerInfoT *config);
 
@@ -292,7 +292,7 @@ public:
             ARFloat conv[3][4]);
 
     /// Calls the pose estimator set with setPoseEstimator() for multi marker tracking
-    virtual ARFloat executeMultiMarkerPoseEstimator(ARMarkerInfo *marker_info, int marker_num,
+    virtual ARFloat executeMultiMarkerPoseEstimator(const uint8_t* nImage, ARMarkerInfo *marker_info, int marker_num,
             ARMultiMarkerInfoT *config);
 
     /*

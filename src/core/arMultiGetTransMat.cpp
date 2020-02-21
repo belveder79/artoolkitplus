@@ -48,7 +48,7 @@ typedef struct {
 
 
  ARFloat
-Tracker::arMultiGetTransMat(ARMarkerInfo *marker_info, int marker_num, ARMultiMarkerInfoT *config)
+Tracker::arMultiGetTransMat(const uint8_t* nImage, ARMarkerInfo *marker_info, int marker_num, ARMultiMarkerInfoT *config)
 {
     ARFloat                *pos2d, *pos3d;
     ARFloat                rot[3][3], trans1[3][4], trans2[3][4];

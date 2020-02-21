@@ -83,7 +83,7 @@ int TrackerMultiMarker::calc(const uint8_t* nImage) {
 				break;
 		}
 
-	if (executeMultiMarkerPoseEstimator(tmp_markers, tmpNumDetected, config) < 0)
+	if (executeMultiMarkerPoseEstimator(nImage, tmp_markers, tmpNumDetected, config) < 0)
 		return 0;
 
 	convertTransformationMatrixToOpenGLStyle(config->trans, this->gl_para);
