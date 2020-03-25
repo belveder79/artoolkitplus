@@ -83,6 +83,12 @@ public:
     virtual void selectDetectedMarker(const int id);
 
     /**
+     * return internal info about selected marker
+     *
+    */
+    virtual const ARMarkerInfo* getMarkerInfo(const int id);
+
+    /**
      * Select the best marker based on Confidence
      */
     virtual int selectBestMarkerByCf();

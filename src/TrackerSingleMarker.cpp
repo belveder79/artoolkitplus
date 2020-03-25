@@ -112,6 +112,15 @@ void TrackerSingleMarker::selectDetectedMarker(const int id) {
     }
 }
 
+const ARMarkerInfo* TrackerSingleMarker::getMarkerInfo(const int id) {
+    for (int i = 0; i < marker_num; i++) {
+      if (marker_info[i].id == id) {
+        return &(marker_info[i]);
+      }
+    }
+    return NULL;
+}
+
 int TrackerSingleMarker::addPattern(const char* nFileName) {
     int patt_id = arLoadPatt(const_cast<char*> (nFileName));
 
