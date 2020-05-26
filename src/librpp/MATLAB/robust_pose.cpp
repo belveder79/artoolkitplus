@@ -4,6 +4,7 @@
 #include "../rpp.h"
 #include "../rpp_types.h"
 #include "../rpp_vecmat.h"
+#include "../rpp_const.h"
 #include "mex.h"
 
 using namespace rpp;
@@ -37,28 +38,45 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 	model.resize(n);
 	iprts.resize(n);
 
-	unsigned int j=0;
-	for(unsigned int i=0; i<n; i++)
-	{
-		vec3_t _vm,_vi;
-		vec3_assign(_vm,(real_t)model_v[j],(real_t)model_v[j+1],(real_t)model_v[j+2]);
-		vec3_assign(_vi,(real_t)iprts_v[j],(real_t)iprts_v[j+1],(real_t)iprts_v[j+2]);
-		j += 3;
-		model[i] = _vm;
-		iprts[i] = _vi;
-	}
-
-	options_t options;
-    options.epsilon = (float)DEFAULT_EPSILON;
-    options.tol =     (float)DEFAULT_TOL;
-	mat33_set_all_zeros(options.initR);
-
-	real_t  err;
-	vec3_t  t;
-	mat33_t R;    
+    int shifter = 0;
     
-	robust_pose(err,R,t,model,iprts,options);
-   
+    real_t  err;
+    vec3_t  t;
+    mat33_t R;
+#ifdef FIX    
+    while(shifter < n)
+    {
+#endif
+        unsigned int j=shifter*3;
+        for(unsigned int i=0; i<n; i++)
+        {
+            vec3_t _vm,_vi;
+            vec3_assign(_vm,(real_t)model_v[j],(real_t)model_v[j+1],(real_t)model_v[j+2]);
+            vec3_assign(_vi,(real_t)iprts_v[j],(real_t)iprts_v[j+1],(real_t)iprts_v[j+2]);
+            j += 3;
+            j %= 3*n;
+            model[i] = _vm;
+            iprts[i] = _vi;
+        }
+
+        options_t options;
+        options.epsilon = (float)DEFAULT_EPSILON;
+        options.tol =     (float)DEFAULT_TOL;
+        mat33_set_all_zeros(options.initR);  
+
+        robust_pose(err,R,t,model,iprts,options);
+
+        rpp_float determinant =
+        R.m[0][0] * (R.m[1][1] * R.m[2][2] - R.m[1][2] * R.m[2][1]) -
+        R.m[0][1]*(R.m[1][0] * R.m[2][2] - R.m[1][2] * R.m[2][0]) +
+        R.m[0][2]*(R.m[1][0] * R.m[2][1] - R.m[1][1] * R.m[2][0]);
+        mexPrintf("Determinant: %f\n",determinant);
+#ifdef FIX            
+        if(determinant > 0)
+            break;
+        shifter++;
+    }
+#endif
     plhs[0] = mxCreateDoubleMatrix(3, 3, mxREAL);
     R_v = mxGetPr(plhs[0]);
 

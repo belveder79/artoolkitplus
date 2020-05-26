@@ -43,15 +43,6 @@ void robustPlanarPose(rpp_float &err, rpp_mat &R, rpp_vec &t, const rpp_float cc
 
     mat33_inv(K_inv, K);
 
-    for (unsigned int i = 0; i < model_iprts_size; i++) {
-        vec3_t _v, _v2;
-        vec3_assign(_v, (real_t) model[i][0], (real_t) model[i][1], (real_t) model[i][2]);
-        _model[i] = _v;
-        vec3_assign(_v, (real_t) iprts[i][0], (real_t) iprts[i][1], (real_t) iprts[i][2]);
-        vec3_mult(_v2, K_inv, _v);
-        _iprts[i] = _v2;
-    }
-
     options_t options;
     options.max_iter = max_iterations;
     options.epsilon = (real_t) (epsilon == 0 ? DEFAULT_EPSILON : epsilon);
@@ -68,8 +59,43 @@ void robustPlanarPose(rpp_float &err, rpp_mat &R, rpp_vec &t, const rpp_float cc
     mat33_t _R;
     vec3_t _t;
 
-    robust_pose(_err, _R, _t, _model, _iprts, options);
+    int shifter = 0;
+    rpp_float determinant;
+    while(shifter < model_iprts_size)
+    {
+        for (unsigned int i = 0; i < model_iprts_size; i++) {
+            vec3_t _v, _v2;
+            vec3_assign(_v, (real_t) model[(i+shifter)%model_iprts_size][0], (real_t) model[(i+shifter)%model_iprts_size][1], (real_t) model[(i+shifter)%model_iprts_size][2]);
+            _model[i] = _v;
+            vec3_assign(_v, (real_t) iprts[(i+shifter)%model_iprts_size][0], (real_t) iprts[(i+shifter)%model_iprts_size][1], (real_t) iprts[(i+shifter)%model_iprts_size][2]);
+            vec3_mult(_v2, K_inv, _v);
+            _iprts[i] = _v2;
+        }
+        
+        robust_pose(_err, _R, _t, _model, _iprts, options);
 
+        determinant =
+            _R.m[0][0] * (_R.m[1][1] * _R.m[2][2] - _R.m[1][2] * _R.m[2][1]) -
+            _R.m[0][1]*(_R.m[1][0] * _R.m[2][2] - _R.m[1][2] * _R.m[2][0]) +
+            _R.m[0][2]*(_R.m[1][0] * _R.m[2][1] - _R.m[1][1] * _R.m[2][0]);
+        
+        if(determinant > 0)
+            break;
+        shifter++;
+    }
+    
+    
+    // final check
+    if(determinant < 0)
+    {
+        _err = 1e9; // just mark solution bad
+        
+        // THERE IS A REFLECTION SOMEWHERE - NO SOLUTION TO THAT KNOWN SO FAR...
+        // deliberately mirror on the y = 0 plane
+        //_R.m[0][1] *= -1; _R.m[1][1] *= -1; _R.m[2][1] *= -1;
+        //_t.v[0] *= -1; _t.v[2] *= -1;
+    }
+        
     for (int j = 0; j < 3; j++) {
         R[j][0] = (rpp_float) _R.m[j][0];
         R[j][1] = (rpp_float) _R.m[j][1];
